@@ -31,7 +31,7 @@ export default function JobCard({
             : ""}
           ✅
         </p>
-        <div className="">
+        <div className="jobcard__about">
           <AboutCompany jobData={jobData} />
           <div className="view__job">
             <button

@@ -38,13 +38,18 @@ function App() {
   }, [getJobsDataResult]);
 
   return (
-    <div className="App">
+    <>
       <h1>Jobs</h1>
-      <JobCard
-        jobData={jobsData[0]}
-        handleOpenModal={handleOpenModal}
-        generateRandomNumber={generateRandomNumber}
-      />
+      <div className="home">
+        {jobsData.map((job, index) => (
+          <JobCard
+            key={index}
+            jobData={job}
+            handleOpenModal={handleOpenModal}
+            generateRandomNumber={generateRandomNumber}
+          />
+        ))}
+      </div>
       <Modal open={isModalOpen} onClose={handleCloseModal}>
         <Box
           sx={{
@@ -68,7 +73,7 @@ function App() {
           )}
         </Box>
       </Modal>
-    </div>
+    </>
   );
 }
 

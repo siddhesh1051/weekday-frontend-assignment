@@ -8,6 +8,10 @@ export default function JobCard({
   handleOpenModal,
   generateRandomNumber,
 }) {
+  const capatalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   return (
     <div className="jobcard">
       <div>
@@ -16,20 +20,22 @@ export default function JobCard({
         </div>
         <div className="jobcard__company">
           <div className="jobcard__company__logo">
-            <img height={"100%"} src={jobData?.logoUrl} alt="" />
+            <img height={50} width={50} src={jobData?.logoUrl} alt="" />
           </div>
           <div className="jobcard__company__details">
             <h3 className="jobcard__company__name">{jobData?.companyName}</h3>
-            <h2 className="jobcard__job__role">{jobData?.jobRole}</h2>
-            <p className="jobcard__job__location">{jobData?.location}</p>
+            <h2 className="jobcard__job__role">
+              {capatalizeFirstLetter(jobData?.jobRole)}
+            </h2>
+            <p className="jobcard__job__location">
+              {capatalizeFirstLetter(jobData?.location)}
+            </p>
           </div>
         </div>
         <p className="jobcard__salary">
-          Estimated Salary: ₹{jobData?.minJdSalary} - {jobData?.maxJdSalary} LPA{" "}
-          {jobData?.salaryCurrencyCode
-            ? "(" + jobData.salaryCurrencyCode + ")"
-            : ""}
-          ✅
+          Estimated Salary: ₹
+          {jobData?.minJdSalary === null ? "N/A" : jobData?.minJdSalary} -{" "}
+          {jobData?.maxJdSalary} LPA ✅
         </p>
         <div className="jobcard__about">
           <AboutCompany jobData={jobData} />
@@ -42,16 +48,26 @@ export default function JobCard({
             </button>
           </div>
         </div>
-        {jobData?.minExp && (
+        {jobData?.minExp ? (
           <div className="jobcard__exp">
             <h5 className="jobcard__exp__title">Minimum Experience</h5>
             <h2 className="jobcard__exp__duration">{jobData?.minExp} Years </h2>
           </div>
+        ) : (
+          <div className="jobcard__exp">
+            <h5 className="jobcard__exp__title">Minimum Experience</h5>
+            <h2 className="jobcard__exp__duration">Not Disclosed</h2>
+          </div>
         )}
-        {jobData?.maxExp && (
+        {jobData?.maxExp ? (
           <div className="jobcard__exp">
             <h5 className="jobcard__exp__title">Maximum Experience</h5>
             <h2 className="jobcard__exp__duration">{jobData?.maxExp} Years</h2>
+          </div>
+        ) : (
+          <div className="jobcard__exp">
+            <h5 className="jobcard__exp__title">Maximum Experience</h5>
+            <h2 className="jobcard__exp__duration">Not Disclosed</h2>
           </div>
         )}
       </div>

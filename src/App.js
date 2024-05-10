@@ -2,7 +2,15 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { useGetSampleJdMutation } from "./redux/api/jobsApi";
 import JobCard from "./components/JobCard";
-import { Box, Container, Modal } from "@mui/material";
+import {
+  Box,
+  Container,
+  Modal,
+  Select,
+  MenuItem,
+  InputLabel,
+  Chip,
+} from "@mui/material";
 import AboutCompany from "./components/AboutCompany";
 
 function App() {
@@ -11,20 +19,20 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalJobData, setModalJobData] = useState({});
   const [offset, setOffset] = useState(0);
-  const [minExpFilter, setMinExpFilter] = useState(0); // State for minimum experience filter
-  const [minBasePayFilter, setMinBasePayFilter] = useState(0); // State for minimum base pay filter
-  const [selectedLocations, setSelectedLocations] = useState([]); // State for selected locations
+  const [minExpFilter, setMinExpFilter] = useState(0);
+  const [minBasePayFilter, setMinBasePayFilter] = useState(0);
+  const [selectedLocations, setSelectedLocations] = useState([]);
 
   const handleOpenModal = (job) => {
     setIsModalOpen(true);
     setModalJobData(job);
   };
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setModalJobData({});
   };
 
-  // Function to generate random number between 1 to 10
   const generateRandomNumber = () => {
     return Math.floor(Math.random() * 10) + 1;
   };
@@ -41,7 +49,7 @@ function App() {
     }
   }, [getJobsDataResult]);
 
-  const handleScroll = (e) => {
+  const handleScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     if (
       scrollTop + clientHeight >= scrollHeight - 10 &&
@@ -54,69 +62,90 @@ function App() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  }, []);
 
-  // Function to handle change in minimum experience filter
   const handleMinExpChange = (e) => {
     setMinExpFilter(parseInt(e.target.value));
   };
 
-  // Function to handle change in minimum base pay filter
   const handleMinBasePayChange = (e) => {
     setMinBasePayFilter(parseInt(e.target.value));
   };
 
-  // Function to handle change in selected locations
-  const handleLocationChange = (e) => {
-    const selectedOptions = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setSelectedLocations(selectedOptions);
+  const handleLocationChange = (event) => {
+    setSelectedLocations(event.target.value);
   };
 
   return (
     <>
       <h1>Jobs</h1>
-      {/* Select dropdown for minimum experience filter */}
-      <select value={minExpFilter} onChange={handleMinExpChange}>
-        <option value={0}>Select Minimum Experience</option>
-        {[...Array(10).keys()].map((i) => (
-          <option key={i + 1} value={i + 1}>
-            {i + 1}
-          </option>
-        ))}
-      </select>
+      <div className="filter__container">
+        <InputLabel id="select-location">Select Location(s)</InputLabel>
+        <Select
+          multiple
+          labelId="select-location"
+          value={selectedLocations}
+          onChange={handleLocationChange}
+          inputProps={{ "aria-label": "Select Locations" }}
+          // label="Select Location(s)"
+          renderValue={(selected) => (
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              {selected.map((value) => (
+                <Chip
+                  key={value}
+                  label={value}
+                  onDelete={() => {
+                    setSelectedLocations(
+                      selectedLocations.filter((location) => location !== value)
+                    );
+                  }}
+                />
+              ))}
+            </Box>
+          )}
+        >
+          {/* <MenuItem value="Select Location(s)">Select Location(s)</MenuItem> */}
+          {[
+            { label: "Delhi NCR", val: "delhi ncr" },
+            { label: "Mumbai", val: "mumbai" },
+            { label: "Remote", val: "remote" },
+            { label: "Chennai", val: "chennai" },
+            { label: "Bangalore", val: "bangalore" },
+          ].map((option) => (
+            <MenuItem key={option.val} value={option.val}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
 
-      {/* Select dropdown for minimum base pay filter */}
-      <select value={minBasePayFilter} onChange={handleMinBasePayChange}>
-        <option value={0}>Select Minimum Base Pay</option>
-        {[...Array(21).keys()].map((i) => (
-          <option key={i} value={i * 1000000}>
-            {i * 10}L
-          </option>
-        ))}
-      </select>
+        <Select
+          value={minExpFilter}
+          onChange={handleMinExpChange}
+          displayEmpty
+          inputProps={{ "aria-label": "Select Minimum Experience" }}
+        >
+          <MenuItem value={0}>Select Minimum Experience</MenuItem>
+          {[...Array(10).keys()].map((i) => (
+            <MenuItem key={i + 1} value={i + 1}>
+              {i + 1}
+            </MenuItem>
+          ))}
+        </Select>
 
-      {/* Multiple selector for locations */}
-      <select
-        multiple
-        value={selectedLocations}
-        onChange={handleLocationChange}
-      >
-        <option value="">Select Location(s)</option>
-        {[
-          { label: "delhi ncr", value: "delhi ncr" },
-          { label: "mumbai", value: "mumbai" },
-          { label: "remote", value: "remote" },
-          { label: "chennai", value: "chennai" },
-          { label: "bangalore", value: "bangalore" },
-        ].map((option) => (
-          <option key={option.val} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        <Select
+          value={minBasePayFilter}
+          onChange={handleMinBasePayChange}
+          displayEmpty
+          inputProps={{ "aria-label": "Select Minimum Base Pay" }}
+        >
+          <MenuItem value={0}>Select Minimum Base Pay</MenuItem>
+          {[...Array(21).keys()].map((i) => (
+            <MenuItem key={i} value={i * 10}>
+              {`${i * 10}L`}
+            </MenuItem>
+          ))}
+        </Select>
+      </div>
 
       <Container className="wrapper__container">
         <div className="home">
@@ -128,7 +157,7 @@ function App() {
                 (job) =>
                   (minExpFilter === 0 || job.minExp >= minExpFilter) &&
                   (minBasePayFilter === 0 ||
-                    job.minBasePay >= minBasePayFilter) &&
+                    job.minJdSalary >= minBasePayFilter) &&
                   (selectedLocations.length === 0 ||
                     selectedLocations.includes(job.location))
               )

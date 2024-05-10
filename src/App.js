@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { useGetSampleJdMutation } from "./redux/api/jobsApi";
 import JobCard from "./components/JobCard";
@@ -11,6 +11,9 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalJobData, setModalJobData] = useState({});
   const [offset, setOffset] = useState(0);
+  const [minExpFilter, setMinExpFilter] = useState(0); // State for minimum experience filter
+  const [minBasePayFilter, setMinBasePayFilter] = useState(0); // State for minimum base pay filter
+  const [selectedLocations, setSelectedLocations] = useState([]); // State for selected locations
 
   const handleOpenModal = (job) => {
     setIsModalOpen(true);
@@ -53,12 +56,83 @@ function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  // Function to handle change in minimum experience filter
+  const handleMinExpChange = (e) => {
+    setMinExpFilter(parseInt(e.target.value));
+  };
+
+  // Function to handle change in minimum base pay filter
+  const handleMinBasePayChange = (e) => {
+    setMinBasePayFilter(parseInt(e.target.value));
+  };
+
+  // Function to handle change in selected locations
+  const handleLocationChange = (e) => {
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    setSelectedLocations(selectedOptions);
+  };
+
   return (
     <>
       <h1>Jobs</h1>
+      {/* Select dropdown for minimum experience filter */}
+      <select value={minExpFilter} onChange={handleMinExpChange}>
+        <option value={0}>Select Minimum Experience</option>
+        {[...Array(10).keys()].map((i) => (
+          <option key={i + 1} value={i + 1}>
+            {i + 1}
+          </option>
+        ))}
+      </select>
+
+      {/* Select dropdown for minimum base pay filter */}
+      <select value={minBasePayFilter} onChange={handleMinBasePayChange}>
+        <option value={0}>Select Minimum Base Pay</option>
+        {[...Array(21).keys()].map((i) => (
+          <option key={i} value={i * 1000000}>
+            {i * 10}L
+          </option>
+        ))}
+      </select>
+
+      {/* Multiple selector for locations */}
+      <select
+        multiple
+        value={selectedLocations}
+        onChange={handleLocationChange}
+      >
+        <option value="">Select Location(s)</option>
+        {[
+          { label: "delhi ncr", value: "delhi ncr" },
+          { label: "mumbai", value: "mumbai" },
+          { label: "remote", value: "remote" },
+          { label: "chennai", value: "chennai" },
+          { label: "bangalore", value: "bangalore" },
+        ].map((option) => (
+          <option key={option.val} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+
       <Container className="wrapper__container">
         <div className="home">
-          {jobsData.map((job, index) => (
+          {(minExpFilter === 0 &&
+          minBasePayFilter === 0 &&
+          selectedLocations.length === 0
+            ? jobsData
+            : jobsData.filter(
+                (job) =>
+                  (minExpFilter === 0 || job.minExp >= minExpFilter) &&
+                  (minBasePayFilter === 0 ||
+                    job.minBasePay >= minBasePayFilter) &&
+                  (selectedLocations.length === 0 ||
+                    selectedLocations.includes(job.location))
+              )
+          ).map((job, index) => (
             <JobCard
               key={index}
               jobData={job}
@@ -66,32 +140,6 @@ function App() {
               generateRandomNumber={generateRandomNumber}
             />
           ))}
-        </div>
-        <div className="loading">
-          {getJobsDataResult.isLoading && (
-            <div className="loading__container">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
-                <path
-                  fill="#4943DA"
-                  stroke="#4943DA"
-                  stroke-width="13"
-                  transform-origin="center"
-                  d="m148 84.7 13.8-8-10-17.3-13.8 8a50 50 0 0 0-27.4-15.9v-16h-20v16A50 50 0 0 0 63 67.4l-13.8-8-10 17.3 13.8 8a50 50 0 0 0 0 31.7l-13.8 8 10 17.3 13.8-8a50 50 0 0 0 27.5 15.9v16h20v-16a50 50 0 0 0 27.4-15.9l13.8 8 10-17.3-13.8-8a50 50 0 0 0 0-31.7Zm-47.5 50.8a35 35 0 1 1 0-70 35 35 0 0 1 0 70Z"
-                >
-                  <animateTransform
-                    type="rotate"
-                    attributeName="transform"
-                    calcMode="spline"
-                    dur="2.7"
-                    values="0;120"
-                    keyTimes="0;1"
-                    keySplines="0 0 1 1"
-                    repeatCount="indefinite"
-                  ></animateTransform>
-                </path>
-              </svg>
-            </div>
-          )}
         </div>
       </Container>
 

@@ -10,7 +10,6 @@ import {
   MenuItem,
   InputLabel,
   Chip,
-  OutlinedInput,
   FormControl,
 } from "@mui/material";
 import AboutCompany from "./components/AboutCompany";
@@ -468,8 +467,8 @@ function App() {
         className="wrapper__container"
       >
         <div className="home">
-          {(minExpFilter === 0 &&
-          minBasePayFilter === 0 &&
+          {(minExpFilter === null &&
+          minBasePayFilter === null &&
           selectedLocations.length === 0 &&
           selectedRoles.length === 0 &&
           selectedCompanies.length === 0 &&

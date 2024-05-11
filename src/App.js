@@ -87,30 +87,33 @@ function App() {
 
   const handleMinExpChange = (e) => {
     setMinExpFilter(parseInt(e.target.value));
+    setAreFiltersApplied(true);
   };
 
   const handleMinBasePayChange = (e) => {
     setMinBasePayFilter(parseInt(e.target.value));
+    setAreFiltersApplied(true);
   };
 
   const handleLocationChange = (event) => {
     setSelectedLocations(event.target.value);
+    setAreFiltersApplied(true);
   };
 
   const handleRoleChange = (event) => {
     setSelectedRoles(event.target.value);
+    setAreFiltersApplied(true);
   };
 
   const handleCompanyChange = (event) => {
     setSelectedCompanies(event.target.value);
+    setAreFiltersApplied(true);
   };
 
   const handleTechStackChange = (event) => {
     setSelectedTechStack(event.target.value);
+    setAreFiltersApplied(true);
   };
-
-  console.log(jobsData);
-  console.log(allJobsData);
 
   return (
     <div className="parent__container">

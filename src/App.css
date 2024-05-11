@@ -7,6 +7,28 @@ body {
   box-sizing: border-box;
 }
 
+.parent__container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 10px;
+}
+
+.filter__container {
+  display: flex;
+  flex-wrap: wrap; /* Add this line */
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.form__control {
+  flex-basis: calc(16% - 20px);
+}
+
 /* jobcard styles */
 .jobcard {
   display: flex;
@@ -246,5 +268,8 @@ body {
   .jobcard {
     width: calc(50% - 30px);
     max-width: 350px;
+  }
+  .form__control {
+    flex-basis: calc(33% - 20px);
   }
 }

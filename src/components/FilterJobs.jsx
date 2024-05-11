@@ -25,6 +25,7 @@ export default function FilterJobs({
 }) {
   return (
     <div className="filter__container">
+      {/* location filter */}
       <FormControl className="form__control">
         <InputLabel id="select-location">Select Location(s)</InputLabel>
         <Select
@@ -49,6 +50,7 @@ export default function FilterJobs({
           ))}
         </Select>
       </FormControl>
+      {/* role filter */}
       <FormControl className="form__control">
         <InputLabel id="select-role">Select Role(s)</InputLabel>
         <Select
@@ -74,6 +76,7 @@ export default function FilterJobs({
         </Select>
       </FormControl>
 
+      {/* company filter */}
       <FormControl className="form__control">
         <InputLabel id="select-company">Select Company(s)</InputLabel>
         <Select
@@ -99,6 +102,7 @@ export default function FilterJobs({
         </Select>
       </FormControl>
 
+      {/* tech stack filter */}
       <FormControl className="form__control">
         <InputLabel id="select-tech-stack">Select Tech Stack(s)</InputLabel>
         <Select
@@ -124,6 +128,7 @@ export default function FilterJobs({
         </Select>
       </FormControl>
 
+      {/* Exp filter */}
       <FormControl className="form__control">
         <InputLabel id="select-min-exp">Select Min Exp</InputLabel>
 
@@ -142,6 +147,7 @@ export default function FilterJobs({
         </Select>
       </FormControl>
 
+      {/* Base Pay filter */}
       <FormControl className="form__control">
         <InputLabel id="select-base-pay">Select Minimum Base Pay</InputLabel>
 

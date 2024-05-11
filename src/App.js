@@ -2,18 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { useGetSampleJdMutation } from "./redux/api/jobsApi";
 import JobCard from "./components/JobCard";
-import {
-  Box,
-  Container,
-  Modal,
-  Select,
-  MenuItem,
-  InputLabel,
-  Chip,
-  FormControl,
-} from "@mui/material";
+import { Box, Container, Modal } from "@mui/material";
 import AboutCompany from "./components/AboutCompany";
-import { COMPANY_NAMES, LOCATIONS, ROLES, TECH_STACK } from "./constants/page";
+import FilterJobs from "./components/FilterJobs";
 
 function App() {
   const [getJobsData, getJobsDataResult] = useGetSampleJdMutation();
@@ -117,133 +108,7 @@ function App() {
 
   return (
     <div className="parent__container">
-      <div className="filter__container">
-        <FormControl className="form__control">
-          <InputLabel id="select-location">Select Location(s)</InputLabel>
-          <Select
-            multiple
-            labelId="select-location"
-            value={selectedLocations}
-            onChange={handleLocationChange}
-            inputProps={{ "aria-label": "Select Locations" }}
-            label="Select Location(s)"
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip
-                    key={value}
-                    label={value}
-                    onDelete={() => {
-                      setSelectedLocations(
-                        selectedLocations.filter(
-                          (location) => location !== value
-                        )
-                      );
-                    }}
-                  />
-                ))}
-              </Box>
-            )}
-          >
-            {/* <MenuItem value="Select Location(s)">Select Location(s)</MenuItem> */}
-            {LOCATIONS.map((option) => (
-              <MenuItem key={option.val} value={option.val}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <FormControl className="form__control">
-          <InputLabel id="select-role">Select Role(s)</InputLabel>
-          <Select
-            multiple
-            labelId="select-role"
-            value={selectedRoles}
-            onChange={handleRoleChange}
-            label="Select Role(s)"
-            inputProps={{ "aria-label": "Select Roles" }}
-          >
-            {ROLES.map((option) => (
-              <MenuItem key={option.val} value={option.val}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl className="form__control">
-          <InputLabel id="select-company">Select Company(s)</InputLabel>
-          <Select
-            multiple
-            labelId="select-company"
-            value={selectedCompanies}
-            onChange={handleCompanyChange}
-            label="Select Companies"
-            inputProps={{ "aria-label": "Select Companies" }}
-          >
-            {COMPANY_NAMES.map((option) => (
-              <MenuItem key={option.val} value={option.val}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl className="form__control">
-          <InputLabel id="select-tech-stack">Select Tech Stack(s)</InputLabel>
-          <Select
-            multiple
-            labelId="select-tech-stack"
-            value={selectedTechStack}
-            onChange={handleTechStackChange}
-            label="Select Tech Stacks"
-            inputProps={{ "aria-label": "Select Tech Stacks" }}
-          >
-            {TECH_STACK.map((option) => (
-              <MenuItem key={option.option} value={option.option}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl className="form__control">
-          <InputLabel id="select-min-exp">Select Min Exp</InputLabel>
-
-          <Select
-            labelId="select-min-exp"
-            value={minExpFilter}
-            onChange={handleMinExpChange}
-            label="Select Minimum Experience"
-            inputProps={{ "aria-label": "Select Minimum Experience" }}
-          >
-            {[...Array(10).keys()].map((i) => (
-              <MenuItem key={i + 1} value={i + 1}>
-                {i + 1}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <FormControl className="form__control">
-          <InputLabel id="select-base-pay">Select Minimum Base Pay</InputLabel>
-
-          <Select
-            labelId="select-base-pay"
-            value={minBasePayFilter}
-            onChange={handleMinBasePayChange}
-            label="Select Min Base Pay"
-            inputProps={{ "aria-label": "Select Minimum Base Pay" }}
-          >
-            {[...Array(12).keys()].map((i) => (
-              <MenuItem key={i} value={i * 10}>
-                {`${i * 10}L`}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-
+      <FilterJobs />
       <Container
         sx={{
           display: "flex",

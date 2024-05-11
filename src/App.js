@@ -108,7 +108,20 @@ function App() {
 
   return (
     <div className="parent__container">
-      <FilterJobs />
+      <FilterJobs
+        selectedLocations={selectedLocations}
+        handleLocationChange={handleLocationChange}
+        selectedRoles={selectedRoles}
+        handleRoleChange={handleRoleChange}
+        selectedCompanies={selectedCompanies}
+        handleCompanyChange={handleCompanyChange}
+        selectedTechStack={selectedTechStack}
+        handleTechStackChange={handleTechStackChange}
+        minExpFilter={minExpFilter}
+        handleMinExpChange={handleMinExpChange}
+        minBasePayFilter={minBasePayFilter}
+        handleMinBasePayChange={handleMinBasePayChange}
+      />
       <Container
         sx={{
           display: "flex",

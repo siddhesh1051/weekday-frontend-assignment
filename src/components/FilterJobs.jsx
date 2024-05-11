@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Chip,
@@ -9,38 +9,20 @@ import {
 } from "@mui/material";
 import { COMPANY_NAMES, LOCATIONS, ROLES, TECH_STACK } from "../constants/page";
 
-export default function FilterJobs() {
-  const [selectedLocations, setSelectedLocations] = useState([]);
-  const [selectedRoles, setSelectedRoles] = useState([]);
-  const [selectedCompanies, setSelectedCompanies] = useState([]);
-  const [selectedTechStack, setSelectedTechStack] = useState([]);
-  const [minExpFilter, setMinExpFilter] = useState(null);
-  const [minBasePayFilter, setMinBasePayFilter] = useState(null);
-
-  const handleLocationChange = (event) => {
-    setSelectedLocations(event.target.value);
-  };
-
-  const handleRoleChange = (event) => {
-    setSelectedRoles(event.target.value);
-  };
-
-  const handleCompanyChange = (event) => {
-    setSelectedCompanies(event.target.value);
-  };
-
-  const handleTechStackChange = (event) => {
-    setSelectedTechStack(event.target.value);
-  };
-
-  const handleMinExpChange = (e) => {
-    setMinExpFilter(parseInt(e.target.value));
-  };
-
-  const handleMinBasePayChange = (e) => {
-    setMinBasePayFilter(parseInt(e.target.value));
-  };
-
+export default function FilterJobs({
+  selectedLocations,
+  handleLocationChange,
+  selectedRoles,
+  handleRoleChange,
+  selectedCompanies,
+  handleCompanyChange,
+  selectedTechStack,
+  handleTechStackChange,
+  minExpFilter,
+  handleMinExpChange,
+  minBasePayFilter,
+  handleMinBasePayChange,
+}) {
   return (
     <div className="filter__container">
       <FormControl className="form__control">
@@ -55,13 +37,7 @@ export default function FilterJobs() {
           renderValue={(selected) => (
             <Box sx={{ display: "flex", gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip
-                  key={value}
-                  label={value}
-                  sx={{
-                    borderRadius: "5px",
-                  }}
-                />
+                <Chip key={value} label={value} />
               ))}
             </Box>
           )}
@@ -85,13 +61,7 @@ export default function FilterJobs() {
           renderValue={(selected) => (
             <Box sx={{ display: "flex", gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip
-                  key={value}
-                  label={value}
-                  sx={{
-                    borderRadius: "5px",
-                  }}
-                />
+                <Chip key={value} label={value} />
               ))}
             </Box>
           )}
@@ -116,13 +86,7 @@ export default function FilterJobs() {
           renderValue={(selected) => (
             <Box sx={{ display: "flex", gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip
-                  key={value}
-                  label={value}
-                  sx={{
-                    borderRadius: "5px",
-                  }}
-                />
+                <Chip key={value} label={value} />
               ))}
             </Box>
           )}
@@ -147,13 +111,7 @@ export default function FilterJobs() {
           renderValue={(selected) => (
             <Box sx={{ display: "flex", gap: 0.5 }}>
               {selected.map((value) => (
-                <Chip
-                  key={value}
-                  label={value}
-                  sx={{
-                    borderRadius: "5px",
-                  }}
-                />
+                <Chip key={value} label={value} />
               ))}
             </Box>
           )}

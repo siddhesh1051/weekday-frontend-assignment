@@ -81,7 +81,7 @@ export default function JobCard({
           <Zap color="orange" fill="yellow" />
           <span className="link-underline">Easy Apply</span>
         </a>
-        <a className="btn jobcard__unlock__referral" href="/">
+        <a className="btn jobcard__unlock__referral" href={jobData?.jdLink}>
           <div className="avatar__box">
             <img
               src={AvatarGirl}

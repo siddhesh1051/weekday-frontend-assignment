@@ -17,7 +17,9 @@ import AboutCompany from "./components/AboutCompany";
 
 function App() {
   const [getJobsData, getJobsDataResult] = useGetSampleJdMutation();
+  const [getAllJobsData, getAllJobsDataResult] = useGetSampleJdMutation();
   const [jobsData, setJobsData] = useState([]);
+  const [allJobsData, setAllJobsData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalJobData, setModalJobData] = useState({});
   const [offset, setOffset] = useState(0);
@@ -27,6 +29,7 @@ function App() {
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [selectedCompanies, setSelectedCompanies] = useState([]);
   const [selectedTechStack, setSelectedTechStack] = useState([]);
+  const [areFiltersApplied, setAreFiltersApplied] = useState(false);
 
   const handleOpenModal = (job) => {
     setIsModalOpen(true);
@@ -47,6 +50,10 @@ function App() {
   }, [getJobsData, offset]);
 
   useEffect(() => {
+    getAllJobsData({ limit: 1000 });
+  }, [getAllJobsData]);
+
+  useEffect(() => {
     if (getJobsDataResult.isSuccess) {
       setJobsData((prev) => [...prev, ...getJobsDataResult.data.jdList]);
     } else {
@@ -54,11 +61,20 @@ function App() {
     }
   }, [getJobsDataResult]);
 
+  useEffect(() => {
+    if (getAllJobsDataResult.isSuccess) {
+      setAllJobsData((prev) => [...prev, ...getAllJobsDataResult.data.jdList]);
+    } else {
+      console.log(getAllJobsDataResult.error);
+    }
+  }, [getAllJobsDataResult]);
+
   const handleScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
     if (
-      scrollTop + clientHeight >= scrollHeight - 10 &&
-      !getJobsDataResult.isLoading
+      scrollTop + clientHeight >= scrollHeight - 2 &&
+      !getJobsDataResult.isLoading &&
+      !areFiltersApplied
     ) {
       setOffset((prev) => prev + 10);
     }
@@ -92,6 +108,9 @@ function App() {
   const handleTechStackChange = (event) => {
     setSelectedTechStack(event.target.value);
   };
+
+  console.log(jobsData);
+  console.log(allJobsData);
 
   return (
     <div className="parent__container">
@@ -453,7 +472,7 @@ function App() {
           selectedCompanies.length === 0 &&
           selectedTechStack.length === 0
             ? jobsData
-            : jobsData.filter(
+            : allJobsData.filter(
                 (job) =>
                   (minExpFilter === 0 || job.minExp >= minExpFilter) &&
                   (minBasePayFilter === 0 ||
